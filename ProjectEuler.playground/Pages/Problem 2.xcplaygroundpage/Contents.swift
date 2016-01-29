@@ -21,3 +21,6 @@ while currentFibonacciNumber < 4_000_000 {
 }
 
 print(sum)
+
+sum == 4613732
+// CORRECT ANSWER: 4613732

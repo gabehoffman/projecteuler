@@ -36,8 +36,15 @@ public extension Int {
         }
     }
     
+    func isAFactorOf(num: Int) -> Bool {
+        if ( self == 0 ) {
+            return false
+        }
+        return (num % self) == 0
+    }
+    
     func factors() -> [Int] {
-        let maxCheck = Int(sqrt(Double(self)))
+        let maxCheck = self
         var set: [Int] = []
         if ( self == 0 ) {
             return set
@@ -93,37 +100,43 @@ public extension Int {
         return true
     }
     
-    func largestPrimeFactor() -> Int? {
-        return self.primeFactors().last
+    func primesLessThanMe() -> [Int] {
+        var primes: [Int] = []
+        if ( self == 0 || self == 1 ) {
+            return primes
+        }
+        for i in 2...self {
+            if i.isPrime() {
+                primes.append(i)
+            }
+        }
+        return primes
     }
     
     func primeFactors() -> [Int] {
         let maxCheck = Int(sqrt(Double(self)))
-        var set: [Int] = []
+        var array: [Int] = []
         if ( self == 0 || self == 1 ) {
-            return set
+            return array
         }
         if ( self == 2 || self == 3 ) {
-            return set
+            return array
         }
         for i in 2...maxCheck {
             if i.isAFactorOf(self) {
                 if i.isPrime() {
-                    set.append(i)
+                    array.append(i)
                 }
             }
         }
-        return set.sort(<)
+        return array.sort(<)
     }
     
-    func isAFactorOf(num: Int) -> Bool {
-        if ( self == 0 ) {
-            return false
-        }
-        return (num % self) == 0
+    func largestPrimeFactor() -> Int? {
+        return self.primeFactors().last
     }
     
-    func task3MaxPrimeFactor() -> Int {
+    func maxPrimeFactor() -> Int {
         
         var primeFactors = [Int]()
         var num = self

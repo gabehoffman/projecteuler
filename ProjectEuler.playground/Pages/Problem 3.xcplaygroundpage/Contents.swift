@@ -10,4 +10,6 @@ What is the largest prime factor of the number 600851475143 ?
 600851475143.largestPrimeFactor()
 
 // Refactored
-600851475143.task3MaxPrimeFactor()
+600851475143.maxPrimeFactor()
+
+// CORRECT ANSWER: 6857

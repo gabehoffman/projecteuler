@@ -25,3 +25,6 @@ for i in 1..<1000 {
 }
 
 print(sum)
+
+sum == 233168
+// CORRECT ANSWER: 233168

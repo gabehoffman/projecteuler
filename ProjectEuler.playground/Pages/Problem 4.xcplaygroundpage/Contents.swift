@@ -21,3 +21,6 @@ repeat {
 product
 threeDigitA
 threeDigitB
+
+product == 906609
+// CORRECT ANSWER: 906609
