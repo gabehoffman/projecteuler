@@ -15,7 +15,7 @@ factors.intersect(set1to20) == set1to20
 
 var number = 0
 var found = false
-let numberOfFactors = 11
+let numberOfFactors = 10
 var muliplier = numberOfFactors.factors().count
 
 repeat {
