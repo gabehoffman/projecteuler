@@ -9,4 +9,4 @@ This playground is where I'll be putting my solutions and building my tools. My 
     
 SPOILER ALERT - If you keep reading, I'm assuming that you've already done them and want to compare notes (that's cool). Suggestions for improvement are welcome and encouraged. And if you think my code sucks? Awesome. Please tell me how I can improve. 
 
-If you are a cheater, cheater, pumpkin eater, well then, you're ruining all the fun of these great challenges for yourself.
+If you are just wanting to cheat...then feel free to ruin all the fun of these great challenges for yourself.
