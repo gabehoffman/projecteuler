@@ -36,6 +36,20 @@ public extension Int {
         }
     }
     
+    func factors() -> [Int] {
+        let maxCheck = Int(sqrt(Double(self)))
+        var set: [Int] = []
+        if ( self == 0 ) {
+            return set
+        }
+        for i in 1...maxCheck {
+            if i.isAFactorOf(self) {
+                set.append(i)
+            }
+        }
+        return set.sort(<)
+    }
+    
     func isPrime() -> Bool {
         let maxCheck = Int(sqrt(Double(self)))
         if ( self == 0 || self == 1 ) {
