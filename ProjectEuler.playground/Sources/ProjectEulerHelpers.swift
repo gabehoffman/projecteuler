@@ -12,6 +12,11 @@ import Foundation
 // Helper Functions
 
 public extension Int {
+    
+    func squared() -> Int {
+        return self * self
+    }
+    
     func isAMultipleOf(m: Int) -> Bool {
         if self == 0 {
             return false
