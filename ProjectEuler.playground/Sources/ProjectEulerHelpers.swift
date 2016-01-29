@@ -50,6 +50,33 @@ public extension Int {
         return set.sort(<)
     }
     
+    func firstNFactors(n: Int) -> [Int] {
+        var set: [Int] = []
+        if ( self == 0 ) {
+            return set
+        }
+        for i in 1...n {
+            if i.isAFactorOf(self) {
+                set.append(i)
+            }
+        }
+        return set.sort(<)
+    }
+    
+    func hasFirstNFactors(n: Int) -> Bool {
+        if ( self == 0 ) {
+            return false
+        }
+        for i in 1...n {
+            if i.isAFactorOf(self) {
+                continue
+            } else {
+                return false
+            }
+        }
+        return true
+    }
+    
     func isPrime() -> Bool {
         let maxCheck = Int(sqrt(Double(self)))
         if ( self == 0 || self == 1 ) {
