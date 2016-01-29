@@ -12,13 +12,15 @@ var muliplier = 1
 var steps = 0
 let numberOfFactorsToCheck = 20
 
-// Select known shared multiples first, tremendoulsy more effiecent than brute force
-// based off intuition, I can't prove the math of it :)
+// Create a large common multiple, then try multiples of that
+// tremendoulsy more effiecent than brute force
+// This is solution is based off intuition, I can't prove the math of it :)
 
 let primeFactors = numberOfFactorsToCheck.primesLessThanMe()
 for prime in primeFactors.indices {
     muliplier *= primeFactors[prime]
 }
+
 repeat {
     number += muliplier
     found = number.hasFirstNFactors(numberOfFactorsToCheck)
@@ -43,6 +45,7 @@ repeat {
 
 number
 
+// Again using sets to check, but still mostly brute force
 var set1to10: Set = [1,2,3,4,5,6,7,8,9,10]
 var set1to20: Set = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
 

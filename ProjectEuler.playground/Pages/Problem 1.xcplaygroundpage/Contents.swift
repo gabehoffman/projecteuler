@@ -16,6 +16,7 @@ for var i = 0; i < 1000; i++ {
 }
 print(sum)
 
+
 // REFACTOR
 sum = 0
 for i in 1..<1000 {
