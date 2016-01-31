@@ -116,3 +116,5 @@ for var i = 0; i < arr.count - series - 1; i++ {
 }
 print(largestProductInSeries)
 
+// CORRECT ANSWER: 23514624000
+

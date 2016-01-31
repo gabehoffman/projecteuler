@@ -10,19 +10,21 @@ There exists exactly one Pythagorean triplet for which a + b + c = 1000.
 Find the product abc.
 */
 
-var maxRange = 1000
-var triplets: [Int] = []
+var maxRange = 500
+var triplets: [(a: Int, b: Int, c: Int)] = []
 
 5.hasAPythagoreanTriplet()
 
-
 for i in 1...maxRange {
-    if i.hasAPythagoreanTriplet() {
-        if i.sumOfPythagoreanTriplet() == 1000 {
-            triplets.append(i)
+    var trips = i.pythagoreanTriplets()
+    if trips.count > 0 {
+        for j in trips.indices {
+            triplets.append(trips[j])
         }
     }
 }
 
 triplets
 
+// CORRECT ANSWER: 31875000 for a:200, b:375, c:425
+// Special Note: Some values for c yield more than a single triplet, you can just find the first one

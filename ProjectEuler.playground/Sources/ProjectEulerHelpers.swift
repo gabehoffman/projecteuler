@@ -191,13 +191,11 @@ public extension Int {
         return foundATriplet
     }
     
-    func sumOfPythagoreanTriplet() -> Int {
-        if !self.hasAPythagoreanTriplet() {
-            return 0
-        }
+    // Returns 0 if no triplet exisits
+    func sumOf1stPythagoreanTriplet() -> Int {
         let c = self
         let cSquared = c.squared()
-        var a = 1, b = 1
+        var a = 0, b = 0
         for i in 1..<self {
             for j in 1..<i {
                 let aSquared = i.squared()
@@ -209,10 +207,34 @@ public extension Int {
             }
         }
         let sum = a + b + c
-        if sum == 1000 {
-            print("\(a),\(b),\(c)")
+        if a != 0 || b != 0 {
+            return (sum)
+        } else {
+            return (0)
         }
-        return (sum)
+    }
+    
+    func pythagoreanTriplets() -> [(a: Int, b: Int, c: Int)] {
+        var triplets: [(a: Int, b: Int, c: Int)] = []
+        let c = self
+        let cSquared = c.squared()
+        var a = 1, b = 1
+        for i in 1..<self {
+            for j in 1..<i {
+                let aSquared = i.squared()
+                let bSquared = j.squared()
+                if aSquared + bSquared == cSquared {
+                    a = j
+                    b = i
+                    triplets.append((a: a, b: b, c: c))
+                    let sum = a + b + c
+                    if sum == 1000 {
+                        print("Found special triplet, a:\(a), b:\(b), c:\(c) || Product = \(a * b * c)")
+                    }
+                }
+            }
+        }
+        return (triplets)
     }
     
 }
