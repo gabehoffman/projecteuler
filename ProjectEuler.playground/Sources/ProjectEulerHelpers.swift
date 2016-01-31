@@ -177,4 +177,42 @@ public extension Int {
         return (palindrome == palindrome.reverse())
     }
     
+    func hasAPythagoreanTriplet() -> Bool {
+        let cSquared = self.squared()
+        var foundATriplet = false
+        for i in 1..<self {
+            for j in 1..<i {
+                let aSquared = i.squared()
+                let bSquared = j.squared()
+                if aSquared + bSquared == cSquared {
+                    foundATriplet = true                }
+            }
+        }
+        return foundATriplet
+    }
+    
+    func sumOfPythagoreanTriplet() -> Int {
+        if !self.hasAPythagoreanTriplet() {
+            return 0
+        }
+        let c = self
+        let cSquared = c.squared()
+        var a = 1, b = 1
+        for i in 1..<self {
+            for j in 1..<i {
+                let aSquared = i.squared()
+                let bSquared = j.squared()
+                if aSquared + bSquared == cSquared {
+                    a = i
+                    b = j
+                }
+            }
+        }
+        let sum = a + b + c
+        if sum == 1000 {
+            print("\(a),\(b),\(c)")
+        }
+        return (sum)
+    }
+    
 }

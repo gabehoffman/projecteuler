@@ -10,7 +10,7 @@ var number = 0
 var found = false
 var muliplier = 1
 var steps = 0
-let numberOfFactorsToCheck = 20
+let numberOfFactorsToCheck = 14
 
 // Create a large common multiple, then try multiples of that
 // tremendoulsy more effiecent than brute force
@@ -27,23 +27,25 @@ repeat {
     steps++
 } while !found
 
-print(muliplier)
 print(number)
-print("Found in just \(steps) steps")
+print("Found in just \(steps) steps using a multiplier of \(muliplier)")
 
 number == 232792560
 
 
-
+steps = 0
 // Brute Force Method works until about 16
 number = 0
 muliplier = numberOfFactorsToCheck
 repeat {
     number += muliplier
     found = number.hasFirstNFactors(numberOfFactorsToCheck)
-} while found
+    steps++
+} while !found
 
 number
+print(number)
+print("Found in just \(steps) steps")
 
 // Again using sets to check, but still mostly brute force
 var set1to10: Set = [1,2,3,4,5,6,7,8,9,10]
