@@ -48,18 +48,31 @@ public extension Int {
         return (num % self) == 0
     }
     
-    func factors() -> [Int] {
-        let maxCheck = self
-        var set: [Int] = []
+    func factorsOld() -> [Int] {
         if ( self == 0 ) {
-            return set
+            return []
         }
-        for i in 1...maxCheck {
-            if i.isAFactorOf(self) {
-                set.append(i)
-            }
+        return (1...self).filter( { self % $0 == 0 } )
+    }
+    
+    func factors() -> [Int] {
+        
+        var result = [Int]()
+        let mySqrt = Int(sqrt(Double(self)))
+        
+        for factor in (1...mySqrt).filter( { self % $0 == 0 } ) {
+            
+            result.append(factor)
+            
+            if self/factor != factor { result.append(self/factor) }
         }
-        return set.sort(<)
+        
+        return result.sort(<)
+        
+    }
+    
+    func factorCount() -> Int {
+        return self.factors().count
     }
     
     func firstNFactors(n: Int) -> [Int] {
@@ -165,7 +178,32 @@ public extension Int {
         //return largest prime factor
         return primeFactors.maxElement()!
     }
-    
+ 
+    func sieve() -> [Int] {
+        guard self > 1 else {
+            return []
+        }
+        
+        var primes =  [Bool](count: self+1, repeatedValue: true)
+        
+        for i in 0..<2 {
+            primes[i] = false
+        }
+        
+        for j in 2..<primes.count where primes[j] {
+            for var k = 2; k*j < primes.count; k++ {
+                primes[k*j] = false
+            }
+        }
+        
+        return primes.enumerate().flatMap { (index: Int, element: Bool) -> Int? in
+            if element {
+                return index
+            }
+            return .None
+        }
+    }
+
     func isPalindrome() -> Bool {
         var palindrome: [String] = []
         var number = self
@@ -237,4 +275,49 @@ public extension Int {
         return (triplets)
     }
     
+    func triangleNumber() -> Int {
+        var triangle = 0
+        if ( self == 0 ) {
+            return 0
+        }
+        if ( self == 1 ) {
+            return 1
+        }
+        for i in 1...self {
+            triangle += i
+        }
+        //print(triangle)
+        return triangle
+    }
+    
+    func triangleNumbers() -> [Int] {
+        var sequence: [Int] = []
+        if ( self == 0 ) {
+            return sequence
+        }
+        if ( self == 1 ) {
+            return [1]
+        }
+        for i in 1...self {
+            sequence.append(i.triangleNumber())
+        }
+        //print(sequence)
+        return sequence
+    }
+    
+    func triangleNumbers(startingWith: Int) -> [Int] {
+        var sequence: [Int] = []
+        let count = startingWith + self
+        if ( self == 0 ) {
+            return sequence
+        }
+        if ( self == 1 ) {
+            return [1]
+        }
+        for i in startingWith...count {
+            sequence.append(i.triangleNumber())
+        }
+        //print(sequence)
+        return sequence
+    }
 }
