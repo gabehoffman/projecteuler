@@ -6,7 +6,7 @@ The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
 Find the sum of all the primes below two million.
 */
 
-// Don't run this too high in a playground (around 200K or so), it'll break it
+// Don't run the brute force method too high in a playground (around 200K or so), it'll break it
 // Use a stand alone command prompt program to get decent performance
 
 var maxSearch = 2_000
@@ -23,7 +23,8 @@ print(sum)
 
 
 // Upgrade to using the Sieve of Eratosthenes
-maxSearch = 200_000
+// Won't break things :)
+maxSearch = 2_000_000
 sum = 0
 primes = maxSearch.sieve()
 for i in primes.indices {
