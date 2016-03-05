@@ -324,4 +324,28 @@ public extension Int {
         //print(sequence)
         return sequence
     }
+    
+    func collatzChainLength() -> Int {
+        var length = 0
+        //print(self)
+        let nextCollatzTransformation = self.collatzTransformation()
+        if  nextCollatzTransformation == 1 {
+            return 2
+        } else {
+            length++ 
+            length += nextCollatzTransformation.collatzChainLength()
+        }
+        
+        return length
+    }
+    
+    func collatzTransformation() -> Int {
+        if self.isEven() {
+            //print(self / 2)
+            return self / 2
+        } else {
+            //print(self * 3 + 1)
+            return self * 3 + 1
+        }
+    }
 }

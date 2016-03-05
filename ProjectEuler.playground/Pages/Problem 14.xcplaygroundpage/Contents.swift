@@ -17,3 +17,21 @@ Which starting number, under one million, produces the longest chain?
 NOTE: Once the chain starts the terms are allowed to go above one million.
 
 */
+
+13.collatzChainLength()
+
+var longestChainLength = 1
+var longestCollatzSeed = 0
+
+for var i = 999_999; i > 100_000; i-- {
+    let length = i.collatzChainLength()
+    if length > longestChainLength {
+        longestChainLength = length
+        longestCollatzSeed = i
+    }
+    
+}
+
+print(longestCollatzSeed)
+
+// Correct Answer = 837799
