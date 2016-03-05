@@ -20,7 +20,7 @@ What is the value of the first triangle number to have over five hundred divisor
 */
 
 var searchCount = 25
-var startingNumber = 10000
+var startingNumber = 10_000
 
 var triangleNumbers = searchCount.triangleNumbers(startingNumber)
 

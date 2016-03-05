@@ -8,6 +8,10 @@
 
 import Foundation
 
+infix operator ^^ { }
+func ^^ (radix: Int, power: Int) -> Int {
+    return Int(pow(Double(radix), Double(power)))
+}
 
 // Helper Functions
 
