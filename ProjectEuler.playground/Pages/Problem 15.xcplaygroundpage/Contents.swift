@@ -10,54 +10,47 @@ How many such routes are there through a 20×20 grid?
 
 struct Grid {
     let rows: Int
-    var paths: [[Bool]] = []
+    var pathCount: [[Int]] = []
     
+    
+    // Create a grid with all the answers, if you add the square above and square to the left of you, you get the path count to that square
     init(rows: Int) {
         self.rows = rows
-        for i in 0..<rows {
-            var row: [Bool] = []
-            var col: [Bool] = []
-            for j in 0..<rows {
-                row.append(false)
-            }
-            for j in 0...rows {
-                col.append(false)
-            }
-            paths.append(row)
-            paths.append(col)
+        
+        var firstRow: [Int] = []
+        for i in 1...rows {
+            firstRow.append(i+1)
         }
-        var row: [Bool] = []
-        for j in 0..<rows {
-            row.append(false)
+        pathCount.append(firstRow)
+        
+        for i in 2...rows {
+            pathCount.append([i+1])
         }
-        paths.append(row)
+        
+        for i in 1..<rows {
+            
+            for j in 1..<rows {
+                let paths: Int = pathCount[i-1][j] + pathCount[i][j-1]
+                pathCount[i].append(paths)
+            }
+
+        }
     }
     
     func printGrid() {
-        for i in paths.indices {
-            if i.isOdd() {
-                print("", terminator: "")
-            } else {
-                print("", terminator: " ")
-            }
-            for j in paths[i].indices {
-                if !paths[i][j] {
-                    if i == paths.count - 1 {
-                        print("‾", terminator: " ")
-                    } else if i.isOdd() {
-                        print("⎮", terminator: " ")
-                    } else {
-                        print("–", terminator: " ")
-                    }
-                } else {
-                    print(" ", terminator: " ")
-                }
+        for i in pathCount.indices {
+            for j in pathCount[i].indices {
+                print("\(pathCount[i][j])", terminator: ", ")
             }
             print("")
         }
     }
 }
 
-var twoByTwo = Grid(rows: 2)
+var threeByThree = Grid(rows: 3)
+var twentyByTwenty = Grid(rows: 20)
 
-twoByTwo.printGrid()
+// Just to check that things are working
+print(threeByThree)
+
+twentyByTwenty.printGrid()
