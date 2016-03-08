@@ -9,9 +9,23 @@
 import Foundation
 
 infix operator ^^ { }
-func ^^ (radix: Int, power: Int) -> Int {
+public func ^^ (radix: Int, power: Int) -> Int {
     return Int(pow(Double(radix), Double(power)))
 }
+
+infix operator ~ { }
+public func ~ (left: Double, right: Int) -> String {
+    if right == 0 {
+        return "\(Int(left))"
+    }
+    var k = 1.0
+    for _ in 1..<(right+1) {
+        k = 10.0 * k
+    }
+    let n = Double(Int(left*k)) / Double(k)
+    return "\(n)"
+}
+
 
 // Helper Functions
 
