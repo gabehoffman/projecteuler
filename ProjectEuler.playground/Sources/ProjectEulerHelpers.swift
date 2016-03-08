@@ -31,6 +31,12 @@ public func ~ (left: Double, right: Int) -> String {
 
 public extension Int {
     
+    func asWord() -> String {
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .SpellOutStyle
+        return "\(formatter.stringFromNumber(self)!)"
+    }
+    
     func squared() -> Int {
         return self * self
     }
