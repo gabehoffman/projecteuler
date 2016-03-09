@@ -29,12 +29,27 @@ public func ~ (left: Double, right: Int) -> String {
 
 // Helper Functions
 
+public extension String {
+    func replace(string:String, replacement:String) -> String {
+        return self.stringByReplacingOccurrencesOfString(string, withString: replacement, options: NSStringCompareOptions.LiteralSearch, range: nil)
+    }
+    
+    func removeWhitespace() -> String {
+        return self.replace(" ", replacement: "")
+    }
+}
+
 public extension Int {
     
     func asWord() -> String {
         let formatter = NSNumberFormatter()
         formatter.numberStyle = .SpellOutStyle
-        return "\(formatter.stringFromNumber(self)!)"
+        let word = "\(formatter.stringFromNumber(self)!)".replace("hundred ", replacement:"hundred and ")
+        return word
+    }
+    
+    func asWordCount() -> Int {
+        return self.asWord().removeWhitespace().replace("-", replacement:"").replace("hundred ", replacement:"hundredand").characters.count
     }
     
     func squared() -> Int {

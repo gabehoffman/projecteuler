@@ -11,4 +11,23 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 
 */
 
-342.asWord()
+// Testing
+101.asWord()
+
+
+// Classic
+var sum = 0
+for i in 1...1_000 {
+    sum += i.asWordCount()
+}
+print(sum)
+
+
+// Functional
+sum = Array(1...1000)
+    .reduce(0) { (total,number) in total + number.asWord()
+        .removeWhitespace()
+        .replace("-", replacement:"")
+        .replace("hundred ", replacement:"hundredand")
+        .characters.count }
+print(sum)
