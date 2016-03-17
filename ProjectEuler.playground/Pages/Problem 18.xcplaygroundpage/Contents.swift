@@ -35,9 +35,8 @@ NOTE: As there are only 16384 routes, it is possible to solve this problem by tr
 
 */
 
-var height = 15
-var triangle: [[Int]] = []
-var paths: [[Int]] = []
+
+// HELPER FUNCTIONS
 
 func formatRow(s: String) -> [Int] {
     let row = s.characters.split(" ").map({ Int(String($0))!})
@@ -108,7 +107,41 @@ func findTrianglePaths(triangle: [[Int]]) -> [[Int]] {
     return goodPaths
 }
 
+func flattenTriangle(triangle: [[Int]]) -> [Int]{
+    var flattenedRow: [Int] = []
+    for row in triangle {
+        var newRow: [Int] = []
+        // init the values on the first row
+        if row.count == 1 {
+            flattenedRow = row
+        } else {
+            for i in 0..<row.count {
+                // Check and see if there exisits nodes above to the left and right and pick the max
+                if i == 0 { // first element has only one choice
+                    newRow.append(flattenedRow[i] + row[i])
+                } else if i == row.count - 1 { // last element only has one choice
+                    newRow.append(flattenedRow[i-1] + row[i])
+                } else {
+                    let left = flattenedRow[i-1] + row[i]
+                    let right = flattenedRow[i] + row[i]
+                    if left > right {
+                        newRow.append(left)
+                    } else {
+                        newRow.append(right)
+                    }
+                }
+            }
+            flattenedRow = newRow
+            print(newRow)
+        }
+    }
+    return flattenedRow
+}
+// END HELPER FUNCTIONS
 
+var height = 15
+var triangle: [[Int]] = []
+var paths: [[Int]] = []
 let input: [String] = [
 "75",
 "95 64",
@@ -130,7 +163,8 @@ for s in input {
     triangle.append(formatRow(s))
 }
 
-//printTriangle(triangle)
+// printTriangle(triangle)
+// find the average of all the numbers in the triangle and use that to prune possible nodes
 var average = 0
 var elementCount = 0
 for row in triangle {
@@ -141,8 +175,11 @@ for row in triangle {
 }
 average /= elementCount
 
+// the average is still too high to find the right paths, reduce it further
+//average /= 2
+
 // Remove numbers that are less than the average of their respective rows
-let filteredTriangle = triangle.map(){ row in row.map(){ number -> Int in if (number < average / 2 && row.count > 4){ return 0 } else {return number} } }
+let filteredTriangle = triangle.map(){ row in row.map(){ number -> Int in if (number <= average && row.count > 4){ return 0 } else {return number} } }
 
 paths = findTrianglePaths(filteredTriangle)
 
@@ -158,6 +195,16 @@ for path in paths {
 print(max)
 
 printTriangle(filteredTriangle)
+print("")
 
 // Correct Answer [75, 64, 82, 87, 82, 75, 73, 28, 83, 32, 91, 78, 58, 73, 93]
 // 1074
+
+
+/* Utilizing the idea that there exsists local optimal answers, 
+you can reduce each row of the triangle into an arry of max values very quickly
+so row 2 is simply 75 + 95 and 75 + 64 = [170, 139]
+row 3 is the max of the current element and node to left and right above = [187, 217, 221]
+this gives you max values, but doesn't revel the path, so there is a trade off
+*/
+print(flattenTriangle(triangle).maxElement()!)
