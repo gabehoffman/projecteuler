@@ -12,7 +12,8 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 */
 
 // Testing
-101.asWord()
+100.asWord()
+342.asWord()
 
 
 // Classic
@@ -25,9 +26,11 @@ print(sum)
 
 // Functional
 sum = Array(1...1000)
-    .reduce(0) { (total,number) in total + number.asWord()
+    .reduce(0) { (total,number) in total + number
+        .asWord()
         .removeWhitespace()
         .replace("-", replacement:"")
         .replace("hundred ", replacement:"hundredand")
-        .characters.count }
+        .characters
+        .count }
 print(sum)
