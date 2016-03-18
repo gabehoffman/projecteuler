@@ -10,50 +10,49 @@ var number = 0
 var found = false
 var muliplier = 1
 var steps = 0
-let numberOfFactorsToCheck = 14
+let numberOfFactorsToCheck = 12
 
-// Create a large common multiple, then try multiples of that
-// tremendoulsy more effiecent than brute force
-// This is solution is based off intuition, I can't prove the math of it :)
-
-let primeFactors = numberOfFactorsToCheck.primesLessThanMe()
-for prime in primeFactors.indices {
-    muliplier *= primeFactors[prime]
+public func problem5BruteForce() -> Int {
+    // Brute Force Method works until about 16
+    muliplier = numberOfFactorsToCheck
+    repeat {
+        number += muliplier
+        found = number.hasFirstNFactors(numberOfFactorsToCheck )
+        steps++
+    } while !found
+    
+    steps
+    return(number)
 }
 
-repeat {
-    number += muliplier
-    found = number.hasFirstNFactors(numberOfFactorsToCheck)
-    steps++
-} while !found
+public func problem5Refactored() -> Int {
+    // Create a large common multiple, then try multiples of that
+    // tremendoulsy more effiecent than brute force
+    // This is solution is based off intuition, I can't prove the math of it :)
+    // Produces incorrect result under 11 factors
+    steps = 0
+    number = 0
+    muliplier = numberOfFactorsToCheck
+    let primeFactors = numberOfFactorsToCheck.primesLessThanMe()
+    for prime in primeFactors.indices {
+        muliplier *= primeFactors[prime]
+    }
+    
+    repeat {
+        number += muliplier
+        found = number.hasFirstNFactors(numberOfFactorsToCheck)
+        steps++
+    } while !found
+    
+    steps
+    
+    return(number)
+}
 
-print(number)
-print("Found in just \(steps) steps using a multiplier of \(muliplier)")
+let classic = benchmark("Problem 5 Brute Force:", body: problem5BruteForce)
+let functional = benchmark("Problem 5 Refactored:", body: problem5Refactored)
 
-number == 232792560
-
-
-steps = 0
-// Brute Force Method works until about 16
-number = 0
-muliplier = numberOfFactorsToCheck
-repeat {
-    number += muliplier
-    found = number.hasFirstNFactors(numberOfFactorsToCheck)
-    steps++
-} while !found
-
-number
-print(number)
-print("Found in just \(steps) steps")
-
-// Again using sets to check, but still mostly brute force
-var set1to10: Set = [1,2,3,4,5,6,7,8,9,10]
-var set1to20: Set = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-
-var factors = Set(2520.factors())
-
-factors.intersect(set1to10) == set1to10
+print(String(format: "%.2f", (classic - functional) / classic * 100) + "% difference")
 
 // Correct Answer: 232792560
 

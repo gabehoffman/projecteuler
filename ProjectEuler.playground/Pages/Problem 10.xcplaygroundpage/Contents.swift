@@ -11,27 +11,31 @@ Find the sum of all the primes below two million.
 
 var maxSearch = 2_000
 
-var primes: [Int] = []
-var sum = 0
-for i in 1...maxSearch{
-    if i.isPrime() {
-        primes.append(i)
-        sum += i
+public func problem10Classic() -> Int {
+    var primes: [Int] = []
+    var sum = 0
+    for i in 1...maxSearch{
+        if i.isPrime() {
+            primes.append(i)
+            sum += i
+        }
     }
+    return(sum)
 }
-print(sum)
 
-
+public func problem10Sieve() -> Int {
 // Upgrade to using the Sieve of Eratosthenes
-// Won't break things :)
-maxSearch = 2_000_000
-sum = 0
-primes = maxSearch.sieve()
-for i in primes.indices {
-    sum += primes[i]
+// Won't break things :) even at 2 million
+    //var maxSearch = 2_000_000
+    let primes = maxSearch.sieve()
+    let sum = primes.reduce(0, combine: +)
+    return(sum)
 }
 
-print(sum)
+let classic = benchmark("Problem 6 Classic:", body: problem10Classic)
+let sieved = benchmark("Problem 6 Sieved :", body: problem10Sieve)
+
+print(String(format: "%.2f", (classic - sieved) / classic * 100) + "% difference")
 
 // CORRECT ANSWER: 142913828922
 

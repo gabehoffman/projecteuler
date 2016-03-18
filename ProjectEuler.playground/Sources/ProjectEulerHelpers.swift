@@ -8,6 +8,24 @@
 
 import Foundation
 
+public func benchmark<T>(label:String, body:()->T) -> Double {
+    var info = mach_timebase_info_data_t(numer: 0, denom: 0)
+    mach_timebase_info(&info)
+    
+    let tick = mach_absolute_time()
+    let result = body()
+    let tock = mach_absolute_time()
+    let delta = tock - tick
+    
+    let nanos = delta * UInt64(info.numer) / UInt64(info.denom)
+    let seconds = Double(nanos) / Double(NSEC_PER_SEC)
+    
+    
+    print("\(label) returned \(result) in \(seconds) seconds")
+    return seconds
+}
+
+
 infix operator ^^ { }
 public func ^^ (radix: Int, power: Int) -> Int {
     return Int(pow(Double(radix), Double(power)))
@@ -29,6 +47,54 @@ public func ~ (left: Double, right: Int) -> String {
 
 // Helper Functions
 
+
+public class FibonacciGenerator : GeneratorType {
+    var previous = (1,2)
+    var maxElementCount: Int
+    var maxElementValue: Int
+    var count = 0
+    var outOfBounds = false
+    
+    public init(end:Int?=nil, max:Int?=nil) {
+        let lastElement = end ?? 9999
+        maxElementCount = lastElement
+        let maxElement = max ?? Int(INT_MAX) / 2
+        maxElementValue = maxElement
+    }
+    
+    public func next() -> Int? {
+        guard count < maxElementCount && !outOfBounds else {
+            return nil
+        }
+        count++
+        
+        let next = previous.0
+        
+        if previous.1 > maxElementValue {
+            outOfBounds = true
+        } else {
+            previous = (previous.1,previous.0+previous.1)
+        }
+        return next
+    }
+}
+
+public class FibonacciSequence : SequenceType {
+    var maxElementCount: Int
+    var maxElementValue: Int
+    
+    public init(end:Int?=nil, max:Int?=nil){
+        let lastElement = end ?? 9999
+        maxElementCount = lastElement
+        let maxElement = max ?? Int(INT_MAX) / 2
+        maxElementValue = maxElement
+    }
+    
+    public func generate() -> FibonacciGenerator{
+        return FibonacciGenerator(end: maxElementCount, max: maxElementValue)
+    }
+}
+
 public extension String {
     func replace(string:String, replacement:String) -> String {
         return self.stringByReplacingOccurrencesOfString(string, withString: replacement, options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -37,6 +103,18 @@ public extension String {
     func removeWhitespace() -> String {
         return self.replace(" ", replacement: "")
     }
+}
+
+public extension UInt {
+    
+    func factorial() -> UInt {
+        if self == 1 {
+            return 1
+        } else {
+            return self * (self - 1).factorial()
+        }
+    }
+    
 }
 
 public extension Int {
@@ -125,6 +203,30 @@ public extension Int {
             }
         }
         return set.sort(<)
+    }
+    
+    func factorial() -> Int {
+        if self == 1 {
+            return 1
+        } else {
+            return self * (self - 1).factorial()
+        }
+    }
+    
+    func sumOfDigits() -> Int {
+        if self == 0 {
+            return 0
+        }
+        var sum = 0
+        var ones = self % 10
+        var remaining = self / 10
+        sum += ones
+        while remaining > 0 {
+            ones = remaining % 10
+            remaining /= 10
+            sum += ones
+        }
+        return sum
     }
     
     func hasFirstNFactors(n: Int) -> Bool {
@@ -382,5 +484,53 @@ public extension Int {
             //print(self * 3 + 1)
             return self * 3 + 1
         }
+    }
+}
+
+public func digitArray(n:Int)->[Int] {
+    var digits: [Int] = []
+    var remaining = n
+    while remaining != 0 {
+        digits.append(remaining % 10)
+        remaining /= 10
+    }
+    return digits
+}
+
+public func multiplyDigitArray(digits: [Int], coefficient: Int) -> [Int] {
+    var carry = true
+    var carryAmount = 0
+    var answer: [Int] = []
+    for digit in digits {
+        var temp = digit * coefficient
+        if carry {
+            carry = false
+            temp += carryAmount
+            carryAmount = 0
+        }
+        let ones = temp % 10
+        let tens = temp / 10
+        answer.append(ones)
+        if tens > 0 {
+            carry = true
+            carryAmount = tens
+        }
+    }
+    while carryAmount > 0 {
+        let ones = carryAmount % 10
+        carryAmount /= 10
+        answer.append(ones)
+    }
+    return answer
+}
+
+public extension Int {
+    init<Seq:SequenceType where Seq.Generator.Element == Int>(digitArray:Seq) {
+        var response = 0
+        for digits in digitArray {
+            response*=10
+            response+=digits
+        }
+        self.init(response)
     }
 }

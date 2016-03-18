@@ -68,160 +68,150 @@ var largestDiagonalRightProduct: Int = 0
 var largestDiagonalRightNumbers: [Int] = []
 var largestDiagonalLeftProduct: Int = 0
 var largestDiagonalLeftNumbers: [Int] = []
+// a guess at the minumum number to filter
+var magicNumber = 87
+var filteredGrid: [[Bool]] = []
+var filtering: Bool = false
 
-// Visual Guide
-var charGrid: [[Character]] = []
-for i in grid.indices {
-    var map: [Character] = []
-    for j in grid[i].indices {
-        if grid[i][j] >= 87 {
-            map.append("@")
-        } else {
-            map.append(" ")
-        }
-    }
-    charGrid.append(map)
-    print("\(map)")
+// Visual Guide and Filtering
+for row in grid {
+    print(row.map(){ (x:Int) -> String in
+        if x >= magicNumber { return("@")
+        } else { return(" ")  }
+        })
+    filteredGrid.append(row.map(){$0 >= magicNumber})
 }
 
 /* HELPER FUNCTIONS */
 
+func problem11() -> Int {
 
-func findLargestRightProductInArray(streak: Int, array: [Int]) {
-    
+    func findLargestRightProductInArray(streak: Int, array: [Int]) {
+        
+        for i in 0...boundry {
+            var product = 1
+            var products: [Int] = []
+            for j in 0..<streak {
+                if filtering && array[i+j] <= magicNumber {
+                    break
+                }
+                product *= array[i + j]
+                products.append(array[i+j])
+            }
+            if product > largestRightProduct {
+                largestRightProduct = product
+                largestRightNumbers = products
+            }
+            //print("Checking products, \(products) = \(product)")
+        }
+        
+        //print("Largest numbers is \(largestRightProduct) from the array \(largestRightNumbers)")
+    }
+
+
+    func findLargestUpProductInArrays(streak: Int, arrays: [[Int]]) {
+        
+        for i in arrays[0].indices {
+            var product = 1
+            var products: [Int] = []
+            for j in 0..<streak {
+                if filtering && arrays[j][i] <= magicNumber {
+                    break
+                }
+                product *= arrays[j][i]
+                products.append(arrays[j][i])
+            }
+            if product > largestUpProduct {
+                largestUpProduct = product
+                largestUpNumbers = products
+            }
+            //print("Checking products, \(products) = \(product)")
+        }
+        
+        //print("Largest numbers is \(largestUpProduct) from the array \(largestUpNumbers)")
+        
+    }
+
+
+    func findLargestDiagonalRightProductInArrays(streak: Int, arrays: [[Int]]) {
+        
+        for i in 0...boundry {
+            var product = 1
+            var products: [Int] = []
+            for j in 0..<streak {
+                if filtering && arrays[j][i+j] <= magicNumber {
+                    break
+                }
+                product *= arrays[j][i+j]
+                products.append(arrays[j][i+j])
+            }
+            if product > largestDiagonalRightProduct {
+                largestDiagonalRightProduct = product
+                largestDiagonalRightNumbers = products
+            }
+            //print("Checking products, \(products) = \(product)")
+        }
+        
+        //print("Largest numbers is \(largestDiagonalRightProduct) from the array \(largestDiagonalRightNumbers)")
+        
+    }
+
+
+    func findLargestDiagonalLeftProductInArrays(streak: Int, arrays: [[Int]]) {
+        
+        for i in 0...boundry {
+            var product = 1
+            var products: [Int] = []
+            for j in 0..<streak {
+                if filtering && arrays[j][i+streak-j-1] <= magicNumber {
+                    break
+                }
+                product *= arrays[j][i+streak-j-1]
+                products.append(arrays[j][i+streak-j-1])
+            }
+            if product > largestDiagonalLeftProduct {
+                largestDiagonalLeftProduct = product
+                largestDiagonalLeftNumbers = products
+            }
+            //print("Checking products, \(products) = \(product)")
+        }
+        
+        //print("Largest numbers is \(largestDiagonalLeftProduct) from the array \(largestDiagonalLeftNumbers)")
+        
+    }
+
+    /* END HELPER FUCNTIONS */
+
+
+
+    for i in grid.indices {
+        findLargestRightProductInArray(streakCount, array: grid[i])
+    }
+
     for i in 0...boundry {
-        var product = 1
-        var products: [Int] = []
-        for j in 0..<streak {
-            product *= array[i + j]
-            products.append(array[i+j])
+        var gridsToCheck: [[Int]] = []
+        for j in 0..<streakCount {
+            gridsToCheck.append(grid[i+j])
         }
-        if product > largestRightProduct {
-            largestRightProduct = product
-            largestRightNumbers = products
-        }
-        //print("Checking products, \(products) = \(product)")
+        findLargestUpProductInArrays(streakCount, arrays: gridsToCheck)
+        findLargestDiagonalRightProductInArrays(streakCount, arrays: gridsToCheck)
+        findLargestDiagonalLeftProductInArrays(streakCount, arrays: gridsToCheck)
     }
-    
-    //print("Largest numbers is \(largestRightProduct) from the array \(largestRightNumbers)")
+        
+    var largest: [Int] = []
+
+    largest.append(largestRightProduct)
+    largest.append(largestUpProduct)
+    largest.append(largestDiagonalRightProduct)
+    largest.append(largestDiagonalLeftProduct)
+
+    return largest.maxElement()!
 }
 
+let classic = benchmark("Problem 6 Classic:", body: problem11)
+filtering = true
+let sieved = benchmark("Problem 6 Filtered :", body: problem11)
 
-func findLargestUpProductInArrays(streak: Int, arrays: [[Int]]) {
-    
-    for i in arrays[0].indices {
-        var product = 1
-        var products: [Int] = []
-        for j in 0..<streak {
-            product *= arrays[j][i]
-            products.append(arrays[j][i])
-        }
-        if product > largestUpProduct {
-            largestUpProduct = product
-            largestUpNumbers = products
-        }
-        //print("Checking products, \(products) = \(product)")
-    }
-    
-    //print("Largest numbers is \(largestUpProduct) from the array \(largestUpNumbers)")
-    
-}
-
-
-func findLargestDiagonalRightProductInArrays(streak: Int, arrays: [[Int]]) {
-    
-    for i in 0...boundry {
-        var product = 1
-        var products: [Int] = []
-        for j in 0..<streak {
-            product *= arrays[j][i+j]
-            products.append(arrays[j][i+j])
-        }
-        if product > largestDiagonalRightProduct {
-            largestDiagonalRightProduct = product
-            largestDiagonalRightNumbers = products
-        }
-        //print("Checking products, \(products) = \(product)")
-    }
-    
-    //print("Largest numbers is \(largestDiagonalRightProduct) from the array \(largestDiagonalRightNumbers)")
-    
-}
-
-
-func findLargestDiagonalLeftProductInArrays(streak: Int, arrays: [[Int]]) {
-    
-    for i in 0...boundry {
-        var product = 1
-        var products: [Int] = []
-        for j in 0..<streak {
-            product *= arrays[j][i+streak-j-1]
-            products.append(arrays[j][i+streak-j-1])
-        }
-        if product > largestDiagonalLeftProduct {
-            largestDiagonalLeftProduct = product
-            largestDiagonalLeftNumbers = products
-        }
-        //print("Checking products, \(products) = \(product)")
-    }
-    
-    //print("Largest numbers is \(largestDiagonalLeftProduct) from the array \(largestDiagonalLeftNumbers)")
-    
-}
-
-/* END HELPER FUCNTIONS */
-
-
-
-for i in grid.indices {
-    findLargestRightProductInArray(streakCount, array: grid[i])
-}
-
-for i in 0...boundry {
-    var gridsToCheck: [[Int]] = []
-    for j in 0..<streakCount {
-        gridsToCheck.append(grid[i+j])
-    }
-    findLargestUpProductInArrays(streakCount, arrays: gridsToCheck)
-    findLargestDiagonalRightProductInArrays(streakCount, arrays: gridsToCheck)
-    findLargestDiagonalLeftProductInArrays(streakCount, arrays: gridsToCheck)
-}
-
-
-largestRightProduct
-largestRightNumbers
-
-largestUpProduct
-largestUpNumbers
-
-largestDiagonalRightProduct
-largestDiagonalRightNumbers
-
-largestDiagonalLeftProduct
-largestDiagonalLeftNumbers
-
-var largest: Int = 0
-var largestNumbers: [Int] = []
-
-if largestUpProduct > largestRightProduct {
-    largest = largestUpProduct
-    largestNumbers = largestUpNumbers
-} else {
-    largest = largestRightProduct
-    largestNumbers = largestRightNumbers
-}
-if largest < largestDiagonalRightProduct {
-    largest = largestDiagonalRightProduct
-    largestNumbers = largestDiagonalRightNumbers
-}
-
-if largest < largestDiagonalLeftProduct {
-    largest = largestDiagonalLeftProduct
-    largestNumbers = largestDiagonalLeftNumbers
-}
-
-largest
-largestNumbers
-
+print(String(format: "%.2f", (classic - sieved) / classic * 100) + "% difference")
 
 // CORRECT ANSWER = 70600674

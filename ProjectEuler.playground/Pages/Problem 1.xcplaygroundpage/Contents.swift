@@ -7,25 +7,27 @@ The sum of these multiples is 23.
 
 Find the sum of all the multiples of 3 or 5 below 1000. */
 
-var sum = 0
-for var i = 0; i < 1000; i++ {
-    if ((i % 3) == 0) || ((i % 5) == 0) {
-        //print(i)
-        sum += i
+public func problem1Classic() -> Int {
+    // Classic Programming
+    var sum = 0
+    for var i = 0; i < 1000; i++ {
+        if ((i % 3) == 0) || ((i % 5) == 0) {
+            //print(i)
+            sum += i
+        }
     }
-}
-print(sum)
-
-
-// REFACTOR
-sum = 0
-for i in 1..<1000 {
-    if ( i.isAMultipleOf(3) || i.isAMultipleOf(5) ) {
-        sum += i
-    }
+    return(sum)
 }
 
-print(sum)
+public func problem1Functional() -> Int {
+    // Functional Refactor
+    let sum = Array(1...999).filter(){ number in number.isAMultipleOf(3) || number.isAMultipleOf(5) }.reduce(0, combine: +)
+    return (sum)
+}
 
-sum == 233168
+let classic = benchmark("Problem 1 Classic   :", body: problem1Classic)
+let functional = benchmark("Problem 1 Functional:", body: problem1Functional)
+
+print(String(format: "%.2f", (classic - functional) / classic * 100) + "% difference")
+
 // CORRECT ANSWER: 233168

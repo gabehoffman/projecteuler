@@ -24,7 +24,7 @@ for i in 1...maxRange {
     }
 }
 
-triplets
+print(triplets)
 
 // CORRECT ANSWER: 31875000 for a:200, b:375, c:425
-// Special Note: Some values for c yield more than a single triplet, you can just find the first one
+// Special Note: Some values for c yield more than a single triplet, you can't just find the first one
